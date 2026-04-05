@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def home_view(request):
+    """Отображает главную страницу сайта"""
+    return render(request, 'core/base.html')

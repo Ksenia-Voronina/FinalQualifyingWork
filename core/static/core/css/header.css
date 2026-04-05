@@ -1,0 +1,191 @@
+/* Основная обёртка шапки */
+.site-header {
+    position: sticky;
+    top: 0;
+    background-color: #1e3799;
+    padding: 0.6rem 2rem;
+}
+
+/* Контейнер для содержимого */
+.header-container {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Левая секция (логотип + навигация) */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+/* Кнопка мобильного меню (бургер) */
+.mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.375rem 0.5rem;
+    color: white;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.mobile-menu-btn:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.mobile-menu-btn img {
+    filter: brightness(0) invert(1);
+    width: 28px;
+    height: 28px;
+}
+
+.mobile-menu-btn:hover img {
+    opacity: 0.9;
+}
+
+/* Надпись  */
+.home-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 1.4rem;
+}
+
+@media (max-width: 768px) {
+    .home-link {
+        font-size: 1.3rem;
+    }
+}
+
+/* Правая секция (иконки + профиль) */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Кнопки-иконки */
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.icon-button:hover {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+
+
+.icon-button img {
+    filter: brightness(0) invert(1);
+    width: 24px;
+    height: 24px;
+}
+
+/* Контейнер для уведомлений с бейджем */
+.notifications-container {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #e74c3c;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+/* Блок авторизации */
+.auth-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Кнопка входа */
+.login-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 0.375rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: background 0.2s;
+}
+
+.login-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.login-button img {
+    filter: brightness(0) invert(1);
+    width: 20px;
+    height: 20px;
+}
+
+/* Аватар пользователя */
+.user-avatar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .site-header {
+        padding: 0.5rem;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .login-button span {
+        display: none;
+    }
+
+    .login-button {
+        padding: 0.375rem 0.625rem;
+    }
+}

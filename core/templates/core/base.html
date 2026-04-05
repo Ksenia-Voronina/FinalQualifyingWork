@@ -1,10 +1,63 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+
+    <title>{% block title %}BookingSpace{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/base.css">
+    <link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/header.css">
+
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- ==================== HEADER ==================== -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-left">
+                <!-- Кнопка открытия бокового меню (бургер) -->
+                <button class="mobile-menu-btn" id="menuToggle" aria-label="Открыть меню">
+                    <img src="{{ STATIC_PREFIX }}core/icons/menu.svg" width="24" height="24" alt="Меню">
+                </button>
+                <a href="{% url 'core:home' %}" class="home-link">Главная</a>
+            </div>
+
+            <div class="header-right">
+                <!-- Уведомления -->
+                <div class="notifications-container">
+                    <button class="icon-button" id="notificationsBtn" aria-label="Уведомления">
+                        <img src="{{ STATIC_PREFIX }}core/icons/bell.svg" width="20" height="20" alt="Уведомления">
+                    </button>
+                    <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                </div>
+
+                <!-- Авторизация -->
+                <div class="auth-section">
+                    {% if user.is_authenticated %}
+                    <button class="user-avatar" id="userAvatarBtn">
+                        {% if user.profile.avatar %}
+                        <img src="{{ user.profile.avatar.url }}" alt="{{ user.get_full_name }}" width="32" height="32">
+                        {% else %}
+                        <img src="{{ STATIC_PREFIX }}core/images/default-avatar.png" alt="Аватар" width="32" height="32">
+                        {% endif %}
+                    </button>
+                    {% else %}
+                    <a href="{#}" class="login-button"> <!-- Заглушка, потом # поменять на % url 'users:login' % -->
+                        <img src="{{ STATIC_PREFIX }}core/icons/log-in.svg" width="16" height="16" alt="">
+                        <span>Вход</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
 
 </body>
 </html>
