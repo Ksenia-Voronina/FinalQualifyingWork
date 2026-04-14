@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/base.css">
     <link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/header.css">
     <link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/sidebar.css">
+    <link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/footer.css">
 
     {% block extra_css %}{% endblock %}
 </head>
@@ -68,6 +69,39 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">BookingSpace</h3>
+                    <p class="footer-description">
+                        Сервис бронирования ивент-пространств<br>
+                        для студентов и сотрудников университета.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-heading">Контакты</h4>
+                    <ul class="footer-links">
+                        <li>📧 booking@university.ru</li>
+                        <li>📞 +7 (495) 123-45-67</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-heading">Информация</h4>
+                    <ul class="footer-links">
+                        <li><a href="{#}">О проекте</a></li>
+                        <li><a href="{#}">Политика конфиденциальности</a></li>
+                        <li><span class="version">Версия 1.0.0</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BookingSpace. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- ==================== SCRIPTS ==================== -->
     <script src="{{ STATIC_PREFIX }}core/js/sidebar.js"></script>
