@@ -1,0 +1,106 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}users/css/profile.css">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-edit-header">
+            <h1 class="profile-edit-title">Редактирование профиля</h1>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data" class="profile-form">
+            {% csrf_token %}
+            
+            <div class="profile-form-fields">
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.first_name.id_for_label }}">Имя</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="form-error">{{ form.first_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group half">
+                        <label for="{{ form.last_name.id_for_label }}">Фамилия</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="form-error">{{ form.last_name.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="form-error">{{ form.email.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.phone.id_for_label }}">Телефон</label>
+                    {{ form.phone }}
+                    <small class="form-hint">Пример: +7 (999) 123-45-67</small>
+                    {% if form.phone.errors %}
+                        <div class="form-error">{{ form.phone.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.student_id.id_for_label }}">Студенческий билет</label>
+                    {{ form.student_id }}
+                    <small class="form-hint">6 цифр</small>
+                    {% if form.student_id.errors %}
+                        <div class="form-error">{{ form.student_id.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="{{ form.faculty.id_for_label }}">Факультет</label>
+                        {{ form.faculty }}
+                        {% if form.faculty.errors %}
+                            <div class="form-error">{{ form.faculty.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group half">
+                        <label for="{{ form.course.id_for_label }}">Курс / Ступень обучения</label>
+                        {{ form.course }}
+                        {% if form.course.errors %}
+                            <div class="form-error">{{ form.course.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.avatar.id_for_label }}">Аватар</label>
+                    {{ form.avatar }}
+                    {% if form.avatar.errors %}
+                        <div class="form-error">{{ form.avatar.errors }}</div>
+                    {% endif %}
+                    
+                    {% if user.profile.avatar %}
+                        <div class="current-avatar">
+                            <p>Текущий аватар:</p>
+                            <img src="{{ user.profile.avatar.url }}" alt="Аватар" width="80" height="80">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="profile-actions">
+                <button type="submit" class="profile-save-btn">Сохранить изменения</button>
+                <a href="{% url 'users:profile' %}" class="profile-cancel-btn">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

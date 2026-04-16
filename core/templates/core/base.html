@@ -43,15 +43,38 @@
                 <!-- Авторизация -->
                 <div class="auth-section">
                     {% if user.is_authenticated %}
-                    <button class="user-avatar" id="userAvatarBtn">
-                        {% if user.profile.avatar %}
-                        <img src="{{ user.profile.avatar.url }}" alt="{{ user.get_full_name }}" width="32" height="32">
-                        {% else %}
-                        <img src="{{ STATIC_PREFIX }}core/images/default-avatar.png" alt="Аватар" width="32" height="32">
-                        {% endif %}
-                    </button>
+                    <div class="user-menu">
+                        <a href="{% url 'users:profile' %}" class="user-avatar-link">
+                            {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" alt="{{ user.get_full_name }}" class="user-avatar-img">
+                            {% else %}
+                            <div class="user-avatar-placeholder">
+                                {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                            </div>
+                            {% endif %}
+                        </a>
+                        <div class="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <strong>{{ user.get_full_name|default:user.username }}</strong>
+                                <span>{{ user.email }}</span>
+                            </div>
+                            <div class="user-dropdown-divider"></div>
+                            <a href="{% url 'users:profile' %}" class="user-dropdown-link">
+                                <img src="{{ STATIC_PREFIX }}core/icons/user.svg" width="18" height="18" alt="">
+                                Личный кабинет
+                            </a>
+                            <div class="user-dropdown-divider"></div>
+                            <form method="post" action="{% url 'users:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="user-dropdown-link user-dropdown-logout">
+                                    <img src="{{ STATIC_PREFIX }}core/icons/log-out.svg" width="18" height="18" alt="">
+                                    Выйти
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                     {% else %}
-                    <a href="{#}" class="login-button"> <!-- Заглушка, потом # поменять на % url 'users:login' % -->
+                    <a href="{% url 'users:login' %}" class="login-btn">
                         <img src="{{ STATIC_PREFIX }}core/icons/log-in.svg" width="16" height="16" alt="">
                         <span>Вход</span>
                     </a>

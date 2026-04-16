@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}users/css/profile.css">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {% if user.profile.avatar %}
+                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.get_full_name }}">
+                {% else %}
+                    <div class="profile-avatar-placeholder">
+                        {{ user.first_name|first|upper }}{{ user.last_name|first|upper }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <h1 class="profile-name">{{ user.get_full_name|default:user.username }}</h1>
+                <p class="profile-username">@{{ user.username }}</p>
+                <p class="profile-email">{{ user.email }}</p>
+            </div>
+        </div>
+        
+        <div class="profile-details">
+            <div class="detail-row">
+                <span class="detail-label">Телефон:</span>
+                <span class="detail-value">{{ user.profile.phone|default:"Не указан" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Студенческий билет:</span>
+                <span class="detail-value">{{ user.profile.student_id|default:"Не указан" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Факультет:</span>
+                <span class="detail-value">{{ user.profile.get_faculty_display|default:"Не указан" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Курс:</span>
+                <span class="detail-value">{{ user.profile.get_course_display|default:"Не указан" }}</span>
+            </div>
+        </div>
+        
+        <div class="profile-actions">
+            <a href="{% url 'users:profile_edit' %}" class="profile-edit-btn">Редактировать профиль</a>
+            <a href="{% url 'users:logout' %}" class="profile-logout-btn">Выйти</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
