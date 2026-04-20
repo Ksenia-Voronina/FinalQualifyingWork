@@ -1,10 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'core/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}Все пространства{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}spaces/css/spaces.css">
+{% endblock %}
+
+{% block content %}
+<div class="spaces-page">
+    <div class="spaces-header">
+        <h1 class="spaces-title">Все пространства</h1>
+        <p class="spaces-subtitle">Выберите подходящее место для вашего мероприятия</p>
+    </div>
+    
+    <div class="spaces-grid">
+        {% for space in spaces %}
+        <div class="space-card">
+            <a href="{% url 'spaces:detail' space.slug %}" class="space-card-link">
+                <div class="space-card-image">
+                    {% if space.image %}
+                    <img src="{{ space.image.url }}" alt="{{ space.name }}">
+                    {% else %}
+                    <img src="https://placehold.co/600x400/1e3799/white?text={{ space.name }}" alt="{{ space.name }}">
+                    {% endif %}
+                </div>
+                <div class="space-card-content">
+                    <h3 class="space-card-title">{{ space.name }}</h3>
+                    <p class="space-card-capacity">👥 до {{ space.capacity }} человек</p>
+                    <p class="space-card-description">{{ space.short_description|truncatechars:80 }}</p>
+                    <div class="space-card-footer">
+                        {% if space.price_per_hour == 0 %}
+                        <span class="space-card-price free">Бесплатно</span>
+                        {% else %}
+                        <span class="space-card-price">{{ space.price_per_hour }} ₽/час</span>
+                        {% endif %}
+                        <span class="space-card-more">Подробнее →</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% empty %}
+        <div class="spaces-empty">
+            <p>Пока нет доступных пространств</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page=1" class="pagination-link">&laquo; Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="pagination-link">Назад</a>
+        {% endif %}
+        
+        <span class="pagination-current">
+            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+        </span>
+        
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="pagination-link">Вперед</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-link">Последняя &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 from .models import Booking
 from spaces.models import Space
 
@@ -25,6 +26,15 @@ class BookingForm(forms.ModelForm):
             'special_requests': 'Особые пожелания',
         }
 
+    def clean_start_datetime(self):
+        """Проверка, что дата начала не в прошлом"""
+        start = self.cleaned_data.get('start_datetime')
+
+        if start and start < timezone.now():
+            raise forms.ValidationError('Нельзя выбрать дату и время в прошлом')
+
+        return start
+
     def clean(self):
         cleaned_data = super().clean()
         start = cleaned_data.get('start_datetime')
@@ -32,6 +42,7 @@ class BookingForm(forms.ModelForm):
 
         if start and end:
             if start >= end:
-                raise forms.ValidationError('Время окончания должно быть позже времени начала')
+                # Ошибка привязывается к полю end_datetime, а не к общей форме
+                self.add_error('end_datetime', 'Время окончания должно быть позже времени начала')
 
         return cleaned_data

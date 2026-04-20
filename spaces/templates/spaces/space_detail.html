@@ -1,10 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'core/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}{{ space.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}spaces/css/spaces.css">
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}spaces/css/space_detail.css">
+{% endblock %}
+
+{% block content %}
+<div class="space-detail">
+    <div class="space-detail-container">
+        <!-- Хлебные крошки -->
+        <div class="breadcrumbs">
+            <a href="{% url 'core:home' %}">Главная</a> / 
+            <a href="{% url 'spaces:list' %}">Пространства</a> / 
+            <span>{{ space.name }}</span>
+        </div>
+        
+        <div class="space-detail-grid">
+            <!-- Левая колонка: изображения -->
+            <div class="space-detail-gallery">
+                <div class="space-main-image">
+                    {% if space.image %}
+                    <img src="{{ space.image.url }}" alt="{{ space.name }}">
+                    {% else %}
+                    <img src="https://placehold.co/800x500/1e3799/white?text={{ space.name }}" alt="{{ space.name }}">
+                    {% endif %}
+                </div>
+                
+                {% if space.images.all %}
+                <div class="space-thumbnails">
+                    {% for image in space.images.all %}
+                    <div class="space-thumbnail">
+                        <img src="{{ image.image.url }}" alt="{{ space.name }}">
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Правая колонка: информация -->
+            <div class="space-detail-info">
+                <h1 class="space-detail-title">{{ space.name }}</h1>
+                
+                <div class="space-detail-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">👥</span>
+                        <span class="meta-text">до {{ space.capacity }} человек</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">💰</span>
+                        <span class="meta-text">
+                            {% if space.price_per_hour == 0 %}
+                            Бесплатно
+                            {% else %}
+                            {{ space.price_per_hour }} ₽/час
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">✅</span>
+                        <span class="meta-text">
+                            {% if space.is_available %}
+                            Доступно для бронирования
+                            {% else %}
+                            Временно недоступно
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="space-detail-description">
+                    <h3>Описание</h3>
+                    <p>{{ space.description|linebreaks }}</p>
+                </div>
+                
+                {% if space.features.all %}
+                <div class="space-detail-features">
+                    <h3>Удобства</h3>
+                    <div class="features-list">
+                        {% for feature in space.features.all %}
+                        <span class="feature-tag">
+                            {% if feature.icon %}{{ feature.icon }}{% else %}✓{% endif %}
+                            {{ feature.name }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="space-detail-actions">
+                    {% if space.is_available %}
+                    <a href="{% url 'bookings:create' space.id %}" class="booking-btn">Забронировать →</a>
+                    {% else %}
+                    <button class="booking-btn disabled" disabled>Недоступно для бронирования</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
