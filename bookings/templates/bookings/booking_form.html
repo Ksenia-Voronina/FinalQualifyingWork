@@ -1,0 +1,119 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Бронирование {{ space.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}bookings/css/booking-form.css">
+{% endblock %}
+
+{% block content %}
+<div class="booking-form-container">
+    <div class="booking-form-card">
+        <div class="booking-form-header">
+            <h1>Бронирование пространства</h1>
+            <div class="space-info">
+                <h2>{{ space.name }}</h2>
+                <p>👥 до {{ space.capacity }} человек</p>
+                <p>💰 {% if space.price_per_hour == 0 %}Бесплатно{% else %}{{ space.price_per_hour }} ₽/час{% endif %}</p>
+            </div>
+        </div>
+
+        <form method="post" class="booking-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.event_name.id_for_label }}">Название мероприятия *</label>
+                {{ form.event_name }}
+                {% if form.event_name.errors %}
+                    <div class="form-error">{{ form.event_name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.event_description.id_for_label }}">Описание мероприятия</label>
+                {{ form.event_description }}
+                {% if form.event_description.errors %}
+                    <div class="form-error">{{ form.event_description.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="{{ form.start_datetime.id_for_label }}">Дата и время начала *</label>
+                    {{ form.start_datetime }}
+                    {% if form.start_datetime.errors %}
+                        <div class="form-error">{{ form.start_datetime.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group half">
+                    <label for="{{ form.end_datetime.id_for_label }}">Дата и время окончания *</label>
+                    {{ form.end_datetime }}
+                    {% if form.end_datetime.errors %}
+                        <div class="form-error">{{ form.end_datetime.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.participants_count.id_for_label }}">Количество участников *</label>
+                {{ form.participants_count }}
+                {% if form.participants_count.errors %}
+                    <div class="form-error">{{ form.participants_count.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.special_requests.id_for_label }}">Особые пожелания</label>
+                {{ form.special_requests }}
+                <small class="form-hint">Например, необходимость в проекторе, флипчарте и т.д.</small>
+                {% if form.special_requests.errors %}
+                    <div class="form-error">{{ form.special_requests.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="booking-summary">
+                <h3>Расчёт стоимости</h3>
+                <p>Стоимость часа: {% if space.price_per_hour == 0 %}Бесплатно{% else %}{{ space.price_per_hour }} ₽{% endif %}</p>
+                <p>Продолжительность: <span id="duration">0</span> ч.</p>
+                <p>Итого: <span id="total">0</span> {% if space.price_per_hour != 0 %}₽{% endif %}</p>
+            </div>
+
+            <div class="booking-form-actions">
+                <button type="submit" class="btn-submit">Забронировать</button>
+                <a href="{% url 'spaces:detail' space.slug %}" class="btn-cancel">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Расчёт стоимости в реальном времени
+    const startInput = document.getElementById('{{ form.start_datetime.id_for_label }}');
+    const endInput = document.getElementById('{{ form.end_datetime.id_for_label }}');
+    const durationSpan = document.getElementById('duration');
+    const totalSpan = document.getElementById('total');
+    const pricePerHour = {{ space.price_per_hour }};
+
+    function calculateTotal() {
+        if (startInput.value && endInput.value) {
+            const start = new Date(startInput.value);
+            const end = new Date(endInput.value);
+            const duration = (end - start) / (1000 * 3600);
+            if (duration > 0) {
+                durationSpan.textContent = duration.toFixed(1);
+                totalSpan.textContent = (duration * pricePerHour).toFixed(0);
+                return;
+            }
+        }
+        durationSpan.textContent = '0';
+        totalSpan.textContent = '0';
+    }
+
+    startInput.addEventListener('change', calculateTotal);
+    endInput.addEventListener('change', calculateTotal);
+</script>
+{% endblock %}

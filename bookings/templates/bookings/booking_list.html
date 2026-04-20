@@ -1,10 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'core/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}Мои бронирования{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}bookings/css/booking-list.css">
+{% endblock %}
+
+{% block content %}
+<div class="booking-list-container">
+    <div class="booking-list-header">
+        <h1>Мои бронирования</h1>
+    </div>
+    
+    <!-- Предстоящие бронирования -->
+    <div class="booking-section">
+        <h2 class="section-title">Предстоящие</h2>
+        {% if upcoming %}
+            <div class="booking-cards">
+                {% for booking in upcoming %}
+                <div class="booking-card">
+                    <div class="booking-card-status status-{{ booking.status }}">
+                        {{ booking.get_status_display }}
+                    </div>
+                    <div class="booking-card-content">
+                        <h3 class="booking-card-title">{{ booking.event_name }}</h3>
+                        <p class="booking-card-space">{{ booking.space.name }}</p>
+                        <div class="booking-card-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>{{ booking.start_datetime|date:"d.m.Y" }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">⏰</span>
+                                <span>{{ booking.start_datetime|time:"H:i" }} - {{ booking.end_datetime|time:"H:i" }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">👥</span>
+                                <span>{{ booking.participants_count }} чел.</span>
+                            </div>
+                        </div>
+                        <div class="booking-card-actions">
+                            <a href="{% url 'bookings:detail' booking.id %}" class="btn-detail">Подробнее</a>
+                            {% if booking.status != 'cancelled' %}
+                            <a href="{% url 'bookings:cancel' booking.id %}" class="btn-cancel" onclick="return confirm('Вы уверены, что хотите отменить бронирование?')">Отменить</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>У вас нет предстоящих бронирований</p>
+                <a href="{% url 'spaces:list' %}" class="btn-browse">Перейти к пространствам</a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Прошедшие бронирования -->
+    <div class="booking-section">
+        <h2 class="section-title">Прошедшие</h2>
+        {% if past %}
+            <div class="booking-cards past">
+                {% for booking in past %}
+                <div class="booking-card booking-card-past">
+                    <div class="booking-card-status status-{{ booking.status }}">
+                        {{ booking.get_status_display }}
+                    </div>
+                    <div class="booking-card-content">
+                        <h3 class="booking-card-title">{{ booking.event_name }}</h3>
+                        <p class="booking-card-space">{{ booking.space.name }}</p>
+                        <div class="booking-card-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span>{{ booking.start_datetime|date:"d.m.Y" }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">👥</span>
+                                <span>{{ booking.participants_count }} чел.</span>
+                            </div>
+                        </div>
+                        <div class="booking-card-actions">
+                            <a href="{% url 'bookings:detail' booking.id %}" class="btn-detail">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>У вас нет прошедших бронирований</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

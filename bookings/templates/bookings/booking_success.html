@@ -1,10 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'core/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block title %}Бронирование создано{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}bookings/css/booking-success.css">
+{% endblock %}
+
+{% block content %}
+<div class="booking-success-container">
+    <div class="booking-success-card">
+        <div class="booking-success-icon">✅</div>
+        <h1>Бронирование успешно создано!</h1>
+        <p>Ваше бронирование отправлено на обработку. Статус можно отслеживать в личном кабинете.</p>
+        <div class="booking-success-actions">
+            <a href="{% url 'bookings:list' %}" class="btn-to-bookings">Мои бронирования</a>
+            <a href="{% url 'spaces:list' %}" class="btn-to-spaces">Другие пространства</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
