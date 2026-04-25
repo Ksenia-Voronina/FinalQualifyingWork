@@ -83,19 +83,29 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'booking_db'),
-        'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-        'PORT': os.environ.get('POSTGRES_PORT', '5433'),
-        'OPTIONS': {
-            'client_encoding': 'UTF8',
-        },
+# Определяем, в какой среде мы находимся
+IS_CODESPACES = os.environ.get('CODESPACES') == 'true'
+
+if IS_CODESPACES:
+    # В Codespaces используем SQLite (гарантированно работает)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    # На локальном компьютере используем PostgreSQL (ваша основная БД)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'booking_db',
+            'USER': 'postgres',
+            'PASSWORD': 'ваш_пароль',
+            'HOST': 'localhost',
+            'PORT': '5433',
+        }
+    }
 
 
 # Password validation
