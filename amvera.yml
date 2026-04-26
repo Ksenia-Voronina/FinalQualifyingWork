@@ -6,6 +6,6 @@ meta:
 build:
   requirementsPath: requirements.txt
 run:
-  command: gunicorn config.wsgi:application --bind 0.0.0.0:80
+  command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
   persistenceMount: /data
-  containerPort: 80
+  containerPort: 8000
