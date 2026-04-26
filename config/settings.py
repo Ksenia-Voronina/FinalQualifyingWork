@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-q^v=-394jqncz)wj+s#r9+e&5!iz&kf20xan=5gi3_wstyl#hq
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '.amvera.io'
+    '.amvera.io',
+    'https://diplom.kseniavoronina.amvera.io'
 ]
 
 
