@@ -28,7 +28,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = [
     '.amvera.io',
-    'https://diplom.kseniavoronina.amvera.io'
+    'diplom.kseniavoronina.amvera.io'
 ]
 
 
