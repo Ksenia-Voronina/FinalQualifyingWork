@@ -24,13 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-q^v=-394jqncz)wj+s#r9+e&5!iz&kf20xan=5gi3_wstyl#hq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    '.preview.app.github.dev',
-    '.github.dev',
+    '.amvera.io'
 ]
 
 
@@ -101,7 +98,7 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'booking_db',
             'USER': 'postgres',
-            'PASSWORD': 'ваш_пароль',
+            'PASSWORD': 'postgres',
             'HOST': 'localhost',
             'PORT': '5433',
         }
@@ -143,15 +140,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Медиафайлы (загруженные пользователями)
+# # Медиафайлы (загруженные пользователями) для локальной работы
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
+
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = '/data/media'
 
 
 AUTHENTICATION_BACKENDS = [
