@@ -2,10 +2,10 @@ meta:
   environment: python
   toolchain:
     name: pip
-    version: '3.10'
+    version: '3.12'
 build:
   requirementsPath: requirements.txt
 run:
-  command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+  command: gunicorn config.wsgi:application --bind 0.0.0.0:${PORT}
   persistenceMount: /data
-  containerPort: 8000
+  containerPort: ${PORT}
