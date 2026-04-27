@@ -1,0 +1,73 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}О проекте{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/about.css">
+{% endblock %}
+
+{% block content %}
+<!-- Hero-секция страницы "О нас" -->
+<section class="about-hero">
+    <div class="about-hero-container">
+        <h1 class="about-hero-title">О проекте</h1>
+        <p class="about-hero-subtitle">Узнайте, как и для чего создавался этот сервис</p>
+    </div>
+</section>
+
+<!-- Основной контент с историей и миссией в два столбца -->
+<section class="about-content">
+    <div class="about-container">
+        <div class="about-grid">
+            <div class="about-text">
+                <h2>История создания</h2>
+                <p>
+                    Проект <strong>BookingSpace</strong> родился из идеи сделать жизнь университетского сообщества проще и удобнее. 
+                    Мы заметили, что студентам, преподавателям и сотрудникам часто сложно найти подходящее помещение для мероприятий: 
+                    от учебных занятий до творческих встреч и конференций.
+                </p>
+                <p>
+                    Так появился сервис, который позволяет легко просматривать все доступные пространства и бронировать их 
+                    в несколько кликов. Наша цель — создать единую платформу для организации мероприятий в стенах университета.
+                </p>
+            </div>
+            <div class="about-text">
+                <h2>Наша миссия</h2>
+                <p>
+                    Мы стремимся сделать процесс бронирования максимально <strong>прозрачным, быстрым и доступным</strong> 
+                    для каждого члена университетского сообщества.
+                </p>
+                <p>
+                    BookingSpace призван объединить студентов, преподавателей и сотрудников, помогая им находить идеальные 
+                    пространства для реализации своих идей — от лекций и семинаров до концертов и фестивалей.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Блок с фактами/преимуществами, стилизованный как "карточки" -->
+<section class="about-facts">
+    <div class="about-container">
+        <div class="facts-grid">
+            <div class="fact-card">
+                <div class="fact-number">6+</div>
+                <div class="fact-label">Уникальных пространств</div>
+            </div>
+            <div class="fact-card">
+                <div class="fact-number">24/7</div>
+                <div class="fact-label">Онлайн-бронирование</div>
+            </div>
+            <div class="fact-card">
+                <div class="fact-number">100+</div>
+                <div class="fact-label">Мероприятий проведено</div>
+            </div>
+            <div class="fact-card">
+                <div class="fact-number">100%</div>
+                <div class="fact-label">Бесплатно для учебы</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

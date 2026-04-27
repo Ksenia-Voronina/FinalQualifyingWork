@@ -1,0 +1,132 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Часто задаваемые вопросы{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/faq.css">
+{% endblock %}
+
+{% block content %}
+<!-- Hero-секция -->
+<section class="faq-hero">
+    <div class="faq-hero-container">
+        <h1 class="faq-hero-title">Часто задаваемые вопросы</h1>
+        <p class="faq-hero-subtitle">Ответы на самые популярные вопросы о бронировании пространств</p>
+    </div>
+</section>
+
+<!-- Секция с аккордеоном -->
+<section class="faq-section">
+    <div class="faq-container">
+        <div class="faq-accordion">
+
+            <!-- Категория: Регистрация и вход -->
+            <div class="faq-category">
+                <h2 class="faq-category-title">Регистрация и вход</h2>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq1" class="faq-input">
+                    <label for="faq1" class="faq-question">Как зарегистрироваться в сервисе?</label>
+                    <div class="faq-answer">
+                        <p>Нажмите на кнопку "Вход" в правом верхнем углу, затем выберите "Зарегистрироваться". Заполните все поля формы: имя, фамилию, email, придумайте пароль. После успешной регистрации вы автоматически войдёте в систему.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq2" class="faq-input">
+                    <label for="faq2" class="faq-question">Как войти в личный кабинет?</label>
+                    <div class="faq-answer">
+                        <p>Нажмите на кнопку "Вход" в правом верхнем углу, введите ваш Email и пароль, затем нажмите "Войти". После успешного входа вы попадёте на главную страницу, а в шапке появится ваш аватар.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Категория: Бронирование -->
+            <div class="faq-category">
+                <h2 class="faq-category-title">Бронирование</h2>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq3" class="faq-input">
+                    <label for="faq3" class="faq-question">Как забронировать пространство?</label>
+                    <div class="faq-answer">
+                        <p>Перейдите в раздел "Пространства", выберите подходящее помещение, нажмите на карточку для просмотра деталей. Затем нажмите кнопку "Забронировать", выберите дату и время мероприятия, заполните информацию и подтвердите бронирование.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq4" class="faq-input">
+                    <label for="faq4" class="faq-question">На сколько времени можно забронировать?</label>
+                    <div class="faq-answer">
+                        <p>Минимальное время бронирования — 1 час. Максимальное время — 6 часов. При необходимости вы можете продлить бронирование через личный кабинет (если пространство свободно).</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq5" class="faq-input">
+                    <label for="faq5" class="faq-question">Могу ли я отменить бронирование?</label>
+                    <div class="faq-answer">
+                        <p>Да, вы можете отменить бронирование в личном кабинете в разделе "Мои бронирования". Рекомендуем делать это не позднее чем за 2 часа до начала мероприятия.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Категория: Пространства -->
+            <div class="faq-category">
+                <h2 class="faq-category-title">Пространства</h2>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq6" class="faq-input">
+                    <label for="faq6" class="faq-question">Какие пространства доступны для бронирования?</label>
+                    <div class="faq-answer">
+                        <p>На данный момент доступны: актовый зал, переговорные комнаты, коворкинг, конференц-зал, спортивный зал и учебные аудитории. Полный список вы можете посмотреть в разделе "Пространства".</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq7" class="faq-input">
+                    <label for="faq7" class="faq-question">Есть ли в пространствах оборудование?</label>
+                    <div class="faq-answer">
+                        <p>Большинство пространств оснащены проектором, доской, Wi-Fi. В некоторых залах есть акустическая система. Подробную информацию об оборудовании вы найдёте на странице каждого пространства.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Категория: Правила и стоимость -->
+            <div class="faq-category">
+                <h2 class="faq-category-title">Правила и стоимость</h2>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq8" class="faq-input">
+                    <label for="faq8" class="faq-question">Бесплатно ли бронирование для студентов?</label>
+                    <div class="faq-answer">
+                        <p>Да, для учебных мероприятий бронирование бесплатно. Для некоммерческих и коммерческих мероприятий стоимость уточняйте у администратора.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq9" class="faq-input">
+                    <label for="faq9" class="faq-question">Нужно ли платить за отмену бронирования?</label>
+                    <div class="faq-answer">
+                        <p>Нет, отмена бронирования бесплатна при условии своевременного уведомления (не позднее чем за 2 часа до начала).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Категория: Технические вопросы -->
+            <div class="faq-category">
+                <h2 class="faq-category-title">Технические вопросы</h2>
+
+                <div class="faq-item">
+                    <input type="checkbox" id="faq10" class="faq-input">
+                    <label for="faq10" class="faq-question">Что делать, если сайт не работает?</label>
+                    <div class="faq-answer">
+                        <p>Попробуйте обновить страницу или зайти позже. Если проблема повторяется, свяжитесь с нами через форму обратной связи в разделе "Контакты".</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

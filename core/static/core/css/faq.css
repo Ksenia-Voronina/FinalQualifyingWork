@@ -1,0 +1,174 @@
+/* ========== FAQ PAGE STYLES ========== */
+
+/* Hero-секция */
+.faq-hero {
+    padding: 3rem 2rem;
+    background: #f8faff;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.faq-hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-hero-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3799;
+    margin-bottom: 0.75rem;
+}
+
+.faq-hero-subtitle {
+    font-size: 1rem;
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+/* Секция с вопросами */
+.faq-section {
+    padding: 3rem 2rem 4rem 2rem;
+    background: #ffffff;
+}
+
+.faq-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Аккордеон */
+.faq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Категория */
+.faq-category {
+    background: #f8faff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.faq-category-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e3799;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Элемент аккордеона */
+.faq-item {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Скрываем чекбокс */
+.faq-input {
+    display: none;
+}
+
+/* Стиль вопроса (кликабельный) */
+.faq-question {
+    display: block;
+    padding: 1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a2634;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    position: relative;
+    padding-right: 30px;
+}
+
+.faq-question:hover {
+    color: #1e3799;
+}
+
+/* Стрелка справа */
+.faq-question::after {
+    content: '▼';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    color: #6c7a91;
+    transition: transform 0.3s ease;
+}
+
+/* Поворот стрелки при открытии */
+.faq-input:checked ~ .faq-question::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* Стиль ответа (скрыт по умолчанию) */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0;
+    margin: 0;
+}
+
+/* Показываем ответ при открытии */
+.faq-input:checked ~ .faq-answer {
+    max-height: 300px;
+    padding-bottom: 1rem;
+}
+
+.faq-answer p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: #4a5568;
+    margin: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .faq-hero {
+        padding: 2rem 1rem;
+    }
+
+    .faq-hero-title {
+        font-size: 1.75rem;
+    }
+
+    .faq-hero-subtitle {
+        font-size: 0.9375rem;
+    }
+
+    .faq-section {
+        padding: 2rem 1rem 3rem 1rem;
+    }
+
+    .faq-category {
+        padding: 1rem;
+    }
+
+    .faq-category-title {
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+    }
+
+    .faq-question {
+        font-size: 0.9375rem;
+    }
+
+    .faq-answer p {
+        font-size: 0.875rem;
+    }
+}

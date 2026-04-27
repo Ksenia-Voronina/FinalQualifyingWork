@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}core/css/contacts.css">
+{% endblock %}
+
+{% block content %}
+<!-- Hero-секция страницы "Контакты" -->
+<section class="contacts-hero">
+    <div class="contacts-hero-container">
+        <h1 class="contacts-hero-title">Контакты</h1>
+        <p class="contacts-hero-subtitle">Мы всегда на связи и готовы помочь</p>
+    </div>
+</section>
+
+<!-- Основная контактная информация -->
+<section class="contacts-info">
+    <div class="contacts-container">
+        <div class="contacts-grid">
+            <div class="contact-card">
+                <div class="contact-icon">📧</div>
+                <h3 class="contact-title">Email</h3>
+                <p class="contact-detail">booking@university.ru</p>
+                <p class="contact-detail">support@bookingspace.ru</p>
+                <p class="contact-note">По общим вопросам и технической поддержке</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📞</div>
+                <h3 class="contact-title">Телефон</h3>
+                <p class="contact-detail">+7 (495) 123-45-67</p>
+                <p class="contact-note">Пн–Пт: 09:00 – 18:00</p>
+            </div>
+            <div class="contact-card">
+                <div class="contact-icon">📍</div>
+                <h3 class="contact-title">Адрес</h3>
+                <p class="contact-detail">г. Москва, ул. Студенческая, д. 1</p>
+                <p class="contact-detail">Университет, корпус №5, этаж 3</p>
+                <p class="contact-note">Администрация сервиса бронирования</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Разделитель -->
+<div class="contact-divider">
+    <div class="contact-divider-line"></div>
+    <span class="contact-divider-text">или напишите нам</span>
+    <div class="contact-divider-line"></div>
+</div>
+
+<!-- Форма обратной связи -->
+<section class="contact-form-section">
+    <div class="contacts-container">
+        <div class="contact-form-wrapper">
+            <h2 class="contact-form-title">Форма обратной связи</h2>
+            <p class="contact-form-subtitle">
+                Если у вас возникли вопросы по бронированию или улучшению сервиса,
+                заполните форму ниже.
+            </p>
+            <form method="post" class="contact-form">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="name">Ваше ФИО</label>
+                        <input type="text" id="name" name="name" placeholder="Иванов Иван Иванович" required>
+                    </div>
+                    <div class="form-group half">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="ivan@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Тема</label>
+                    <input type="text" id="subject" name="subject" placeholder="Вопрос о бронировании" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Сообщение</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Напишите ваш вопрос или предложение..." required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Отправить сообщение</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

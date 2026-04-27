@@ -1,0 +1,250 @@
+/* ========== CONTACTS PAGE STYLES ========== */
+
+/* Hero-секция */
+.contacts-hero {
+    padding: 3rem 2rem;
+    background: #f8faff;
+    text-align: center;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.contacts-hero-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contacts-hero-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3799;
+    margin-bottom: 0.75rem;
+}
+
+.contacts-hero-subtitle {
+    font-size: 1rem;
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+/* Основная контактная информация */
+.contacts-info {
+    padding: 2.5rem 2rem;
+    background: #ffffff;
+}
+
+.contacts-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.contacts-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.contact-card {
+    flex: 1;
+    min-width: 220px;
+    max-width: 280px;
+    text-align: center;
+    padding: 1.25rem 1rem;
+    background: #f8faff;
+    border-radius: 16px;
+    transition: transform 0.2s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-3px);
+}
+
+.contact-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e3799;
+    margin-bottom: 0.5rem;
+}
+
+.contact-detail {
+    font-size: 0.875rem;
+    color: #1a2634;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.contact-note {
+    font-size: 0.75rem;
+    color: #6c7a91;
+    margin-top: 0.5rem;
+}
+
+/* Форма обратной связи */
+.contact-form-section {
+    padding: 2rem 2rem 3rem 2rem;
+    background: #ffffff;
+}
+
+.contact-form-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #f8faff;
+    padding: 2rem;
+    border-radius: 20px;
+}
+
+.contact-form-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e3799;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.contact-form-subtitle {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+}
+
+.contact-form .form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.contact-form .form-group {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.contact-form .form-group.half {
+    flex: 1;
+}
+
+.contact-form label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #1a2634;
+    margin-bottom: 0.4rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    font-size: 0.875rem;
+    font-family: 'Inter', sans-serif;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    background: white;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #1e3799;
+    box-shadow: 0 0 0 3px rgba(30, 55, 153, 0.1);
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: #1e3799;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #162b70;
+    transform: translateY(-2px);
+}
+
+/* Разделитель между блоками */
+.contact-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    max-width: 400px;
+}
+
+.contact-divider-line {
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
+
+.contact-divider-text {
+    font-size: 0.875rem;
+    color: #6c7a91;
+    white-space: nowrap;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .contacts-hero {
+        padding: 2rem 1rem;
+    }
+
+    .contacts-hero-title {
+        font-size: 1.75rem;
+    }
+
+    .contacts-info {
+        padding: 1.5rem 1rem;
+    }
+
+    .contacts-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .contact-card {
+        min-width: auto;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .contact-form-section {
+        padding: 1.5rem 1rem 2rem 1rem;
+    }
+
+    .contact-form-wrapper {
+        padding: 1.25rem;
+    }
+
+    .contact-form-title {
+        font-size: 1.25rem;
+    }
+
+    .contact-form .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .contact-divider {
+        margin: 1.5rem auto;
+    }
+
+    .contact-divider-text {
+        font-size: 0.75rem;
+    }
+}
