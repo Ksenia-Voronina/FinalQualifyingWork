@@ -5,100 +5,89 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ STATIC_PREFIX }}spaces/css/spaces.css">
-<link rel="stylesheet" href="{{ STATIC_PREFIX }}spaces/css/space_detail.css">
+<link rel="stylesheet" href="{{ STATIC_PREFIX }}spaces/css/space-detail.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock %}
 
 {% block content %}
-<div class="space-detail">
-    <div class="space-detail-container">
-        <!-- Хлебные крошки -->
-        <div class="breadcrumbs">
-            <a href="{% url 'core:home' %}">Главная</a> / 
-            <a href="{% url 'spaces:list' %}">Пространства</a> / 
-            <span>{{ space.name }}</span>
-        </div>
-        
-        <div class="space-detail-grid">
-            <!-- Левая колонка: изображения -->
-            <div class="space-detail-gallery">
-                <div class="space-main-image">
-                    {% if space.image %}
+<div class="space-detail-container">
+    <div class="space-detail-grid">
+        <!-- Левая колонка: изображения и характеристики -->
+        <div class="space-detail-left">
+            <div class="space-main-image">
+                {% if space.image %}
                     <img src="{{ space.image.url }}" alt="{{ space.name }}">
-                    {% else %}
-                    <img src="https://placehold.co/800x500/1e3799/white?text={{ space.name }}" alt="{{ space.name }}">
-                    {% endif %}
-                </div>
-                
-                {% if space.images.all %}
-                <div class="space-thumbnails">
-                    {% for image in space.images.all %}
-                    <div class="space-thumbnail">
-                        <img src="{{ image.image.url }}" alt="{{ space.name }}">
-                    </div>
-                    {% endfor %}
-                </div>
+                {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
                 {% endif %}
             </div>
-            
-            <!-- Правая колонка: информация -->
-            <div class="space-detail-info">
-                <h1 class="space-detail-title">{{ space.name }}</h1>
-                
-                <div class="space-detail-meta">
-                    <div class="meta-item">
-                        <span class="meta-icon">👥</span>
-                        <span class="meta-text">до {{ space.capacity }} человек</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-icon">💰</span>
-                        <span class="meta-text">
-                            {% if space.price_per_hour == 0 %}
-                            Бесплатно
-                            {% else %}
-                            {{ space.price_per_hour }} ₽/час
-                            {% endif %}
-                        </span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-icon">✅</span>
-                        <span class="meta-text">
-                            {% if space.is_available %}
-                            Доступно для бронирования
-                            {% else %}
-                            Временно недоступно
-                            {% endif %}
-                        </span>
-                    </div>
+
+            <div class="space-info">
+                <h1 class="space-title">{{ space.name }}</h1>
+                <div class="space-meta">
+                    <span class="space-capacity">👥 до {{ space.capacity }} человек</span>
+                    <span class="space-price">
+                        {% if space.price_per_hour == 0 %}
+                            🎓 Бесплатно
+                        {% else %}
+                            💰 {{ space.price_per_hour }} ₽/час
+                        {% endif %}
+                    </span>
                 </div>
-                
-                <div class="space-detail-description">
-                    <h3>Описание</h3>
-                    <p>{{ space.description|linebreaks }}</p>
-                </div>
-                
-                {% if space.features.all %}
-                <div class="space-detail-features">
+
+                <div class="space-features">
                     <h3>Удобства</h3>
-                    <div class="features-list">
+                    <ul>
                         {% for feature in space.features.all %}
-                        <span class="feature-tag">
-                            {% if feature.icon %}{{ feature.icon }}{% else %}✓{% endif %}
-                            {{ feature.name }}
-                        </span>
+                            <li>{{ feature.name }}</li>
+                        {% empty %}
+                            <li>Информация об удобствах отсутствует</li>
                         {% endfor %}
-                    </div>
+                    </ul>
                 </div>
-                {% endif %}
-                
-                <div class="space-detail-actions">
-                    {% if space.is_available %}
-                    <a href="{% url 'bookings:create' space.id %}" class="booking-btn">Забронировать →</a>
-                    {% else %}
-                    <button class="booking-btn disabled" disabled>Недоступно для бронирования</button>
-                    {% endif %}
+            </div>
+        </div>
+
+        <!-- Правая колонка: бронирование -->
+        <div class="space-detail-right">
+            <div class="booking-card">
+                <h3 class="booking-title">Выберите дату мероприятия</h3>
+                <p class="booking-hint">Нажмите на свободный день в календаре</p>
+
+                <!-- Календарь -->
+                <div class="calendar-wrapper">
+                    <input type="text" id="booking-calendar" class="calendar-input">
                 </div>
+
+                <p class="booking-action-text">
+                    ✨ Выберите свободную дату и забронируйте пространство
+                </p>
+
+                <a href="#" id="booking-btn" class="booking-btn disabled">
+                    Забронировать →
+                </a>
+                <p class="booking-note">На следующем шаге вы сможете выбрать время</p>
             </div>
         </div>
     </div>
+
+    <!-- Детальное описание -->
+    <div class="space-description">
+        <h2>Описание</h2>
+        <p>{{ space.description }}</p>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ru.js"></script>
+<script>
+    // Передаём данные из Django в JavaScript
+    const bookedDatesFull = {{ booked_dates_full|safe }};
+    const bookedDatesPartial = {{ booked_dates_partial|safe }};
+    const bookedHours = {{ booked_hours|safe }};
+    const spaceId = {{ space.id }};
+</script>
+<script src="{% static 'spaces/js/space-detail.js' %}"></script>
 {% endblock %}
