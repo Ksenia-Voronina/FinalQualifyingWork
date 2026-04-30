@@ -1,12 +1,11 @@
-// space-detail.js
 document.addEventListener('DOMContentLoaded', function() {
     const calendarInput = document.getElementById('booking-calendar');
     const bookingBtn = document.getElementById('booking-btn');
-    let currentDateKey = null;
+    let selectedDate = null;  // ← Добавлено: переменная для хранения выбранной даты
 
     if (!calendarInput) return;
 
-    // Создаём тултип
+    // Создаём элемент для всплывающей подсказки
     let tooltip = document.querySelector('.calendar-tooltip');
     if (!tooltip) {
         tooltip = document.createElement('div');
@@ -14,90 +13,53 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(tooltip);
     }
 
-    function showTooltip(dayElement, message, isError = false) {
-        if (!dayElement) return;
-        const rect = dayElement.getBoundingClientRect();
+    function showTooltip(element, message, isError = false) {
+        const rect = element.getBoundingClientRect();
         tooltip.textContent = message;
         tooltip.style.display = 'block';
         tooltip.style.left = `${rect.left + rect.width / 2}px`;
-        tooltip.style.top = `${rect.top - 40}px`;
+        tooltip.style.top = `${rect.top - 35}px`;
         tooltip.style.transform = 'translateX(-50%)';
         tooltip.style.backgroundColor = isError ? '#e53e3e' : '#1a2634';
-        tooltip.style.whiteSpace = 'pre-line';
+
+        // Скрываем через 3 секунды
+        setTimeout(() => {
+            tooltip.style.display = 'none';
+        }, 3000);
     }
 
     function hideTooltip() {
         tooltip.style.display = 'none';
     }
 
-    function formatHour(hour) {
-        return `${hour.toString().padStart(2, '0')}:00`;
-    }
-
-    function getTooltipMessage(dateKey, status) {
-        if (status === 'full') {
-            return '❌ Весь день занят\nДоступных часов нет';
-        }
-        if (status === 'partial') {
-            const busyHours = (bookedHours && bookedHours[dateKey]) ? bookedHours[dateKey] : [];
-            const WORK_START = 8;
-            const WORK_END = 20;
-
-            const allHours = [];
-            for (let i = WORK_START; i < WORK_END; i++) allHours.push(i);
-            const freeHours = allHours.filter(h => !busyHours.includes(h));
-
-            if (freeHours.length === 0) {
-                return '⚠️ Частичная занятость\nСвободных часов нет';
-            }
-
-            // Группировка в диапазоны
-            const ranges = [];
-            let start = freeHours[0];
-            let end = freeHours[0];
-            for (let i = 1; i < freeHours.length; i++) {
-                if (freeHours[i] === end + 1) {
-                    end = freeHours[i];
-                } else {
-                    ranges.push({ start: start, end: end + 1 });
-                    start = freeHours[i];
-                    end = freeHours[i];
-                }
-            }
-            ranges.push({ start: start, end: end + 1 });
-
-            const formattedRanges = ranges.map(range => {
-                if (range.start + 1 === range.end) {
-                    return formatHour(range.start);
-                }
-                return `${formatHour(range.start)}-${formatHour(range.end)}`;
-            }).join(', ');
-
-            return `⚠️ Частичная занятость\n🆓 Свободные часы: ${formattedRanges}`;
-        }
-        return '✅ Свободно\nМожно забронировать';
-    }
-
-    function getDayStatus(dateKey) {
+    function getDateStatus(dateKey) {
         if (bookedDatesFull && bookedDatesFull.includes(dateKey)) {
             return 'full';
-        }
-        if (bookedDatesPartial && bookedDatesPartial.includes(dateKey)) {
+        } else if (bookedDatesPartial && bookedDatesPartial.includes(dateKey)) {
             return 'partial';
         }
         return 'free';
     }
 
-    function refreshDayStyles() {
+    function getTooltipMessage(status) {
+        if (status === 'full') {
+            return '❌ Этот день полностью занят\nВыберите другую дату';
+        } else if (status === 'partial') {
+            return '⚠️ В этот день есть свободные часы\nВыберите время на следующем шаге';
+        }
+        return '✅ Свободный день\nМожно забронировать';
+    }
+
+    function applyHighlightToDays() {
         const days = document.querySelectorAll('.flatpickr-day');
 
-        // Получаем месяц и год из календаря
-        const monthElem = document.querySelector('.flatpickr-current-month');
-        if (!monthElem) return;
+        const currentMonthElem = document.querySelector('.flatpickr-current-month');
+        if (!currentMonthElem) return;
 
-        const monthYearText = monthElem.textContent;
+        const monthYearText = currentMonthElem.textContent;
         const monthMatch = monthYearText.match(/([а-я]+)/i);
         const yearMatch = monthYearText.match(/(\d{4})/);
+
         if (!monthMatch || !yearMatch) return;
 
         const months = {
@@ -117,14 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const monthStr = month.toString().padStart(2, '0');
             const dayStr = dayNumber.toString().padStart(2, '0');
             const dateKey = `${year}-${monthStr}-${dayStr}`;
-            const status = getDayStatus(dateKey);
 
-            // Сохраняем дату как атрибут для доступа при клике
-            day.setAttribute('data-date-key', dateKey);
-            day.setAttribute('data-status', status);
+            const status = getDateStatus(dateKey);
 
-            // Применяем стили
             day.classList.remove('full-day', 'partial-day');
+
             if (status === 'full') {
                 day.classList.add('full-day');
                 day.style.backgroundColor = '#e2e8f0';
@@ -138,27 +97,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 day.style.color = '';
             }
 
-            // Навешиваем обработчик клика напрямую
-            day.onclick = function(e) {
+            // Добавляем обработчик клика для показа подсказки и сохранения даты
+            day.removeEventListener('click', day._clickHandler);
+            day._clickHandler = function(e) {
                 e.stopPropagation();
-                const dateKey = this.getAttribute('data-date-key');
-                const status = this.getAttribute('data-status');
-                const msg = getTooltipMessage(dateKey, status);
+                const msg = getTooltipMessage(status);
                 const isError = (status === 'full');
-                showTooltip(this, msg, isError);
+                showTooltip(day, msg, isError);
 
-                if (status === 'full') {
-                    bookingBtn.classList.add('disabled');
-                    bookingBtn.href = '#';
-                } else {
+                // Сохраняем выбранную дату
+                if (status !== 'full') {
+                    selectedDate = dateKey;
+                    // Обновляем ссылку на кнопке
+                    bookingBtn.href = `/bookings/create/${spaceId}/?date=${selectedDate}`;
                     bookingBtn.classList.remove('disabled');
-                    bookingBtn.href = `/bookings/create/${spaceId}/?date=${dateKey}`;
+                } else {
+                    bookingBtn.classList.add('disabled');
+                    bookingBtn.href = "#";
                 }
             };
+            day.addEventListener('click', day._clickHandler);
         });
     }
 
-    // Инициализация календаря
     const calendar = flatpickr(calendarInput, {
         inline: true,
         dateFormat: "Y-m-d",
@@ -167,34 +128,28 @@ document.addEventListener('DOMContentLoaded', function() {
         firstDayOfWeek: 1,
 
         onChange: function(selectedDates, dateStr) {
-            // Обновляем стили и обработчики
-            setTimeout(refreshDayStyles, 10);
+            if (selectedDates.length && selectedDates[0]) {
+                const status = getDateStatus(dateStr);
 
-            const status = getDayStatus(dateStr);
-            if (status === 'full') {
-                bookingBtn.classList.add('disabled');
-                bookingBtn.href = '#';
-            } else {
-                bookingBtn.classList.remove('disabled');
-                bookingBtn.href = `/bookings/create/${spaceId}/?date=${dateStr}`;
+                if (status === 'full') {
+                    bookingBtn.classList.add('disabled');
+                    bookingBtn.href = "#";
+                    showTooltip(calendarInput.nextElementSibling, getTooltipMessage(status), true);
+                } else {
+                    selectedDate = dateStr;  // ← ДОБАВЛЕНО: сохраняем дату
+                    bookingBtn.classList.remove('disabled');
+                    bookingBtn.href = `/bookings/create/${spaceId}/?date=${dateStr}`;
+                    showTooltip(calendarInput.nextElementSibling, getTooltipMessage(status), false);
+                }
             }
         }
     });
 
-    // Первоначальное применение стилей
-    setTimeout(refreshDayStyles, 100);
+    setTimeout(applyHighlightToDays, 100);
 
-    // Обновляем при смене месяца
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.flatpickr-next-month') || e.target.closest('.flatpickr-prev-month')) {
-            setTimeout(refreshDayStyles, 150);
-        }
-    });
-
-    // Скрытие тултипа
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.flatpickr-day') && !e.target.closest('.flatpickr-calendar')) {
-            hideTooltip();
-        }
+    document.querySelectorAll('.flatpickr-next-month, .flatpickr-prev-month').forEach(btn => {
+        btn.addEventListener('click', function() {
+            setTimeout(applyHighlightToDays, 150);
+        });
     });
 });

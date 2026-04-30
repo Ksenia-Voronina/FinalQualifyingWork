@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.urls import reverse
+from datetime import datetime
 from .models import Booking
 from .forms import BookingForm
 from spaces.models import Space
@@ -9,8 +9,10 @@ from spaces.models import Space
 
 @login_required   # Проверка авторизован ли пользователь
 def booking_create(request, space_id):
-    """Создание нового бронирования"""
     space = get_object_or_404(Space, id=space_id, is_available=True)
+
+    # Получаем дату из GET-параметра
+    selected_date = request.GET.get('date')
 
     if request.method == 'POST':
         form = BookingForm(request.POST)
@@ -20,14 +22,25 @@ def booking_create(request, space_id):
             booking.space = space
             booking.save()
             messages.success(request, f'Пространство "{space.name}" успешно забронировано!')
-            return redirect('bookings:detail', id=booking.id)
+            return redirect('bookings:my_bookings')
     else:
         form = BookingForm()
+
+        # Если дата передана, подставляем её в форму
+        if selected_date:
+            try:
+                date_obj = datetime.strptime(selected_date, '%Y-%m-%d')
+                initial_data = {
+                    'start_datetime': date_obj,
+                }
+                form = BookingForm(initial=initial_data)
+            except ValueError:
+                pass
 
     return render(request, 'bookings/booking_form.html', {
         'form': form,
         'space': space,
-        'active': 'bookings'
+        'selected_date': selected_date,  # передаём дату в шаблон
     })
 
 
