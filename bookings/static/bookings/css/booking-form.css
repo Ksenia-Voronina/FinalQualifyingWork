@@ -194,6 +194,95 @@
     font-size: 0.875rem;
 }
 
+/* Блок выбора времени */
+.time-booking-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.time-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Стиль ошибки блока времени */
+.time-booking-error {
+    background-color: #fff5f5;
+    border: 1px solid #e53e3e;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.time-booking-error .form-error {
+    color: #e53e3e;
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+.time-booking-error + .form-group {
+    margin-top: 0.75rem;
+}
+
+/* Подсветка всего блока при ошибке */
+.time-booking-wrapper.has-error .time-row .form-group input,
+.time-booking-wrapper.has-error .time-row .form-group select {
+    border-color: #e53e3e;
+    background-color: #fff5f5;
+}
+
+/* Убираем двойную подсветку */
+.time-booking-wrapper.has-error {
+    border: 1px solid #e53e3e;
+    border-radius: 12px;
+    padding: 0.75rem;
+    background-color: #fff5f5;
+}
+
+.time-booking-wrapper.has-error .time-row {
+    margin-bottom: 0;
+}
+
+.time-booking-wrapper.has-error .time-booking-error {
+    border: none;
+    padding: 0.75rem 0 0 0;
+    margin-bottom: 0;
+    background-color: transparent;
+}
+
+
+/* ========== ИНФОРМАЦИЯ О ЗАНЯТЫХ СЛОТАХ ========== */
+
+.booked-slots-info {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+}
+
+.info-header strong {
+    font-size: 0.9375rem;
+    color: #1e3799;
+}
+
+.booked-slots-list {
+    background: #fff5f5;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+}
+
+.free-slots-info {
+    background: #f0fdf4;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+}
+
 /* Адаптивность */
 @media (max-width: 640px) {
     .booking-form-container {
