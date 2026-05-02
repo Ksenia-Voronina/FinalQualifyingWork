@@ -30,7 +30,7 @@
                         {% if space.price_per_hour == 0 %}
                             🎓 Бесплатно
                         {% else %}
-                            💰 {{ space.price_per_hour }} ₽/час
+                            💰 {{ space.price_per_hour|floatformat:2 }} ₽/час
                         {% endif %}
                     </span>
                 </div>
