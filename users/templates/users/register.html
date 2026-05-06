@@ -12,11 +12,20 @@
     <div class="auth-card">
         <h1 class="auth-title">Регистрация</h1>
 
+        <!-- Вывод общих ошибок формы -->
+        {% if form.non_field_errors %}
+        <div class="non-field-errors">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <form method="post" class="auth-form">
             {% csrf_token %}
 
             <div class="form-row">
-                <div class="form-group half">
+                <div class="form-group half {% if form.first_name.errors %}error-field{% endif %}">
                     <label for="{{ form.first_name.id_for_label }}">Имя</label>
                     {{ form.first_name }}
                     {% if form.first_name.errors %}
@@ -24,7 +33,7 @@
                     {% endif %}
                 </div>
 
-                <div class="form-group half">
+                <div class="form-group half {% if form.last_name.errors %}error-field{% endif %}">
                     <label for="{{ form.last_name.id_for_label }}">Фамилия</label>
                     {{ form.last_name }}
                     {% if form.last_name.errors %}
@@ -33,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group {% if form.username.errors %}error-field{% endif %}">
                 <label for="{{ form.username.id_for_label }}">Имя пользователя</label>
                 {{ form.username }}
                 {% if form.username.errors %}
@@ -42,7 +51,7 @@
                 <small class="form-hint">Только буквы, цифры и @/./+/-/_</small>
             </div>
 
-            <div class="form-group">
+            <div class="form-group {% if form.email.errors %}error-field{% endif %}">
                 <label for="{{ form.email.id_for_label }}">Email</label>
                 {{ form.email }}
                 {% if form.email.errors %}
@@ -51,7 +60,7 @@
             </div>
 
             <div class="form-row">
-                <div class="form-group half">
+                <div class="form-group half {% if form.password1.errors %}error-field{% endif %}">
                     <label for="{{ form.password1.id_for_label }}">Пароль</label>
                     {{ form.password1 }}
                     {% if form.password1.errors %}
@@ -59,7 +68,7 @@
                     {% endif %}
                 </div>
 
-                <div class="form-group half">
+                <div class="form-group half {% if form.password2.errors %}error-field{% endif %}">
                     <label for="{{ form.password2.id_for_label }}">Подтверждение пароля</label>
                     {{ form.password2 }}
                     {% if form.password2.errors %}
@@ -77,6 +86,7 @@
     </div>
 </div>
 {% endblock %}
+
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {

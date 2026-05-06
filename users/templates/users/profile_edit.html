@@ -14,20 +14,29 @@
             <h1 class="profile-edit-title">Редактирование профиля</h1>
         </div>
         
+        <!-- Вывод общих ошибок формы -->
+        {% if form.non_field_errors %}
+        <div class="non-field-errors">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <form method="post" enctype="multipart/form-data" class="profile-form">
             {% csrf_token %}
-            
+
             <div class="profile-form-fields">
                 <div class="form-row">
-                    <div class="form-group half">
+                    <div class="form-group half {% if form.first_name.errors %}error-field{% endif %}">
                         <label for="{{ form.first_name.id_for_label }}">Имя</label>
                         {{ form.first_name }}
                         {% if form.first_name.errors %}
                             <div class="form-error">{{ form.first_name.errors }}</div>
                         {% endif %}
                     </div>
-                    
-                    <div class="form-group half">
+
+                    <div class="form-group half {% if form.last_name.errors %}error-field{% endif %}">
                         <label for="{{ form.last_name.id_for_label }}">Фамилия</label>
                         {{ form.last_name }}
                         {% if form.last_name.errors %}
@@ -35,16 +44,16 @@
                         {% endif %}
                     </div>
                 </div>
-                
-                <div class="form-group">
+
+                <div class="form-group {% if form.email.errors %}error-field{% endif %}">
                     <label for="{{ form.email.id_for_label }}">Email</label>
                     {{ form.email }}
                     {% if form.email.errors %}
                         <div class="form-error">{{ form.email.errors }}</div>
                     {% endif %}
                 </div>
-                
-                <div class="form-group">
+
+                <div class="form-group {% if form.phone.errors %}error-field{% endif %}">
                     <label for="{{ form.phone.id_for_label }}">Телефон</label>
                     {{ form.phone }}
                     <small class="form-hint">Пример: +7 (999) 123-45-67</small>
@@ -52,8 +61,8 @@
                         <div class="form-error">{{ form.phone.errors }}</div>
                     {% endif %}
                 </div>
-                
-                <div class="form-group">
+
+                <div class="form-group {% if form.student_id.errors %}error-field{% endif %}">
                     <label for="{{ form.student_id.id_for_label }}">Студенческий билет</label>
                     {{ form.student_id }}
                     <small class="form-hint">6 цифр</small>
@@ -61,17 +70,17 @@
                         <div class="form-error">{{ form.student_id.errors }}</div>
                     {% endif %}
                 </div>
-                
+
                 <div class="form-row">
-                    <div class="form-group half">
+                    <div class="form-group half {% if form.faculty.errors %}error-field{% endif %}">
                         <label for="{{ form.faculty.id_for_label }}">Факультет</label>
                         {{ form.faculty }}
                         {% if form.faculty.errors %}
                             <div class="form-error">{{ form.faculty.errors }}</div>
                         {% endif %}
                     </div>
-                    
-                    <div class="form-group half">
+
+                    <div class="form-group half {% if form.course.errors %}error-field{% endif %}">
                         <label for="{{ form.course.id_for_label }}">Курс / Ступень обучения</label>
                         {{ form.course }}
                         {% if form.course.errors %}
@@ -79,8 +88,8 @@
                         {% endif %}
                     </div>
                 </div>
-                
-                <div class="form-group">
+
+                <div class="form-group {% if form.avatar.errors %}error-field{% endif %}">
                     <label for="{{ form.avatar.id_for_label }}">Аватар</label>
                     {{ form.avatar }}
                     {% if form.avatar.errors %}

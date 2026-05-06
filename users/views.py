@@ -14,9 +14,18 @@ def register_view(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
             messages.success(request, 'Регистрация прошла успешно!')
             return redirect('core:home')
+        else:
+            # Выводим ошибки формы
+            for field, errors in form.errors.items():
+                for error in errors:
+                    if field == '__all__':
+                        messages.error(request, error)
+                    else:
+                        messages.error(request, f'{error}')
     else:
         form = RegistrationForm()
 
@@ -35,6 +44,7 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=email, password=password)
             if user is not None:
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
                 login(request, user)
                 messages.success(request, f'Добро пожаловать, {user.first_name or user.username}!')
                 return redirect('core:home')

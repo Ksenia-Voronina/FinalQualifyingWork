@@ -173,10 +173,28 @@
     margin-top: 0.25rem;
 }
 
+/* Ошибки */
+.form-group.error-field input,
+.form-group.error-field select,
+.form-group.error-field textarea {
+    border-color: #e53e3e !important;
+    background-color: #fff5f5 !important;
+}
+
 .form-error {
     color: #e53e3e;
     font-size: 0.75rem;
     margin-top: 0.25rem;
+}
+
+.non-field-errors {
+    background-color: #fff5f5;
+    border: 1px solid #e53e3e;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.5rem;
+    color: #e53e3e;
+    font-size: 0.875rem;
 }
 
 /* Текущий аватар */

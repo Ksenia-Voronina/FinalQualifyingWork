@@ -15,11 +15,35 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].error_messages = {
+            'required': 'Введите пароль',
+        }
+        self.fields['password2'].error_messages = {
+            'required': 'Подтвердите пароль',
+        }
+        self.fields['username'].help_text = 'Обязательное поле. Только буквы, цифры и символы @/./+/-/_.'
+        self.fields['password1'].help_text = 'Пароль должен содержать не менее 8 символов.'
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError('Пользователь с таким именем уже существует')
+        return username
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('Пользователь с таким email уже существует')
         return email
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError('Пароли не совпадают')
+        return password2
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -47,6 +71,27 @@ class LoginForm(AuthenticationForm):
         })
     )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Меняем сообщения для полей
+        self.fields['username'].error_messages = {
+            'required': 'Введите email',
+            'invalid': 'Введите корректный email'
+        }
+        self.fields['password'].error_messages = {
+            'required': 'Введите пароль',
+        }
+        # Меняем стандартное сообщение об ошибке
+        self.error_messages['invalid_login'] = 'Неверный email или пароль'
+
+    def confirm_login_allowed(self, user):
+        """Переопределяем проверку активности пользователя"""
+        if not user.is_active:
+            raise forms.ValidationError(
+                'Учётная запись не активирована',
+                code='inactive',
+            )
+
 
 class ProfileEditForm(forms.ModelForm):
     """Форма редактирования профиля пользователя"""
@@ -66,6 +111,43 @@ class ProfileEditForm(forms.ModelForm):
             self.fields['first_name'].initial = self.user.first_name
             self.fields['last_name'].initial = self.user.last_name
             self.fields['email'].initial = self.user.email
+
+        self.fields['phone'].error_messages = {
+            'invalid': 'Введите корректный номер телефона',
+        }
+        self.fields['student_id'].error_messages = {
+            'invalid': 'Введите корректный номер студенческого билета',
+            'max_length': 'Номер студенческого билета должен содержать не более 6 символов',
+        }
+        self.fields['faculty'].error_messages = {
+            'invalid_choice': 'Выберите факультет из списка',
+            'required': 'Выберите факультет',
+        }
+        self.fields['course'].error_messages = {
+            'invalid_choice': 'Выберите курс из списка',
+            'required': 'Выберите курс',
+        }
+        self.fields['avatar'].error_messages = {
+            'invalid': 'Загрузите корректный файл изображения',
+        }
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if phone and not phone.replace('+', '').replace(' ', '').replace('-', '').replace('(', '').replace(')', '').isdigit():
+            raise forms.ValidationError('Номер телефона должен содержать только цифры и символы +, -, (, ), пробел')
+        return phone
+
+    def clean_student_id(self):
+        student_id = self.cleaned_data.get('student_id')
+        if student_id and not student_id.isdigit():
+            raise forms.ValidationError('Номер студенческого билета должен содержать только цифры')
+        return student_id
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and User.objects.exclude(id=self.user.id).filter(email=email).exists():
+            raise forms.ValidationError('Пользователь с таким email уже существует')
+        return email
 
     def save(self, commit=True):
         if self.user:

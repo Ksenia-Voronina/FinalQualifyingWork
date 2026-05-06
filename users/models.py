@@ -52,11 +52,12 @@ class UserProfile(models.Model):
         blank=True,
         verbose_name='Факультет'
     )
-    course = models.PositiveSmallIntegerField(
+    course = models.CharField(
+        max_length=20,
         choices=COURSE_CHOICES,
         blank=True,
         null=True,
-        verbose_name='Курс'
+        verbose_name='Курс / Ступень обучения'
     )
     avatar = models.ImageField(
         upload_to='avatars/',
