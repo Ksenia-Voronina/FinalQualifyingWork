@@ -1,89 +1,54 @@
 {% load static %}
 
-<!-- Секция с пространствами (коллаж) -->
 <section class="spaces-showcase">
     <div class="spaces-container">
         <h2 class="spaces-title">Популярные пространства</h2>
-        <p class="spaces-subtitle">Выберите идеальное место для вашего мероприятия</p>
+        <p class="spaces-subtitle">Наведите на картинку, чтобы узнать подробности</p>
 
+        {% if featured_spaces %}
         <div class="spaces-collage">
-            <!-- Большая карточка (актовый зал) -->
-            <div class="collage-card collage-card-large">
-                <div class="collage-card-image">
-                    <img src="#" alt="Актовый зал">
+            {% for space in featured_spaces %}
+                {% if forloop.first %}
+                <!-- Большая карточка (первое пространство) -->
+                <div class="collage-card collage-card-large">
+                    <div class="collage-card-image">
+                        {% if space.image %}
+                            <img src="{{ space.image.url }}" alt="{{ space.name }}">
+                        {% else %}
+                            <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                        {% endif %}
+                        <div class="collage-card-overlay">
+                            <h3 class="overlay-title">{{ space.name }}</h3>
+                            <p class="overlay-capacity">👥 до {{ space.capacity }} человек</p>
+                            <a href="{% url 'spaces:detail' space.slug %}" class="overlay-btn">Подробнее →</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="collage-card-content">
-                    <h3 class="collage-card-title">Актовый зал</h3>
-                    <p class="collage-card-capacity">👥 до 200 человек</p>
-                    <p class="collage-card-description">Идеально для концертов, лекций и торжественных мероприятий</p>
-                    <a href="#" class="collage-card-btn">Подробнее →</a>
-                </div>
-            </div>
 
-            <!-- Правая колонка с двумя карточками -->
-            <div class="collage-right-column">
-                <!-- Конференц-зал -->
+                <!-- Начинаем правую колонку -->
+                <div class="collage-right-column">
+                {% else %}
+                <!-- Средние карточки (второе и третье пространства) -->
                 <div class="collage-card collage-card-medium">
                     <div class="collage-card-image">
-                        <img src="#" alt="Конференц-зал">
-                    </div>
-                    <div class="collage-card-content">
-                        <h3 class="collage-card-title">Конференц-зал</h3>
-                        <p class="collage-card-capacity">👥 до 50 человек</p>
-                        <p class="collage-card-description">Для деловых встреч и презентаций</p>
-                        <a href="#" class="collage-card-btn">Подробнее →</a>
-                    </div>
-                </div>
-
-                <!-- Коворкинг -->
-                <div class="collage-card collage-card-medium">
-                    <div class="collage-card-image">
-                        <img src="#" alt="Коворкинг">
-                    </div>
-                    <div class="collage-card-content">
-                        <h3 class="collage-card-title">Коворкинг</h3>
-                        <p class="collage-card-capacity">👥 до 30 человек</p>
-                        <p class="collage-card-description">Свободная зона для работы и обсуждений</p>
-                        <a href="#" class="collage-card-btn">Подробнее →</a>
+                        {% if space.image %}
+                            <img src="{{ space.image.url }}" alt="{{ space.name }}">
+                        {% else %}
+                            <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                        {% endif %}
+                        <div class="collage-card-overlay">
+                            <h3 class="overlay-title">{{ space.name }}</h3>
+                            <p class="overlay-capacity">👥 до {{ space.capacity }} человек</p>
+                            <a href="{% url 'spaces:detail' space.slug %}" class="overlay-btn">Подробнее →</a>
+                        </div>
                     </div>
                 </div>
+                {% endif %}
+            {% endfor %}
             </div>
         </div>
-
-        <!-- Нижний ряд (3 маленькие карточки) -->
-        <div class="spaces-bottom-row">
-            <div class="collage-card collage-card-small">
-                <div class="collage-card-image">
-                    <img src="#" alt="Переговорная">
-                </div>
-                <div class="collage-card-content">
-                    <h3 class="collage-card-title">Переговорная</h3>
-                    <p class="collage-card-capacity">👥 до 12 человек</p>
-                    <a href="#" class="collage-card-btn">Подробнее →</a>
-                </div>
-            </div>
-
-            <div class="collage-card collage-card-small">
-                <div class="collage-card-image">
-                    <img src="#" alt="Спортзал">
-                </div>
-                <div class="collage-card-content">
-                    <h3 class="collage-card-title">Спортивный зал</h3>
-                    <p class="collage-card-capacity">👥 до 40 человек</p>
-                    <a href="#" class="collage-card-btn">Подробнее →</a>
-                </div>
-            </div>
-
-            <div class="collage-card collage-card-small">
-                <div class="collage-card-image">
-                    <img src="#" alt="Библиотека">
-                </div>
-                <div class="collage-card-content">
-                    <h3 class="collage-card-title">Библиотека</h3>
-                    <p class="collage-card-capacity">👥 до 60 человек</p>
-                    <a href="#" class="collage-card-btn">Подробнее →</a>
-                </div>
-            </div>
-        </div>
+        {% else %}
+        <p class="no-spaces">Пока нет пространств, отмеченных для показа на главной.</p>
+        {% endif %}
     </div>
 </section>

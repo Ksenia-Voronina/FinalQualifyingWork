@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: 1fr 380px;
     gap: 2rem;
-    margin-bottom: 3rem;
+    align-items: start;
 }
 
 .space-detail-left {
@@ -20,7 +20,7 @@
 
 .space-main-image {
     width: 100%;
-    height: 400px;
+    height: 420px;
     overflow: hidden;
 }
 
@@ -31,56 +31,31 @@
 }
 
 .space-info {
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 0 1.5rem;
 }
 
 .space-title {
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #1e3799;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .space-meta {
     display: flex;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 1rem;
 }
 
 .space-capacity,
 .space-price {
-    font-size: 0.9375rem;
-    color: #4a5568;
-}
-
-.space-features h3 {
     font-size: 1rem;
-    font-weight: 700;
-    color: #1a2634;
-    margin-bottom: 0.75rem;
-}
-
-.space-features ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.space-features li {
-    background: #f8faff;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.8125rem;
-    color: #1e3799;
+    color: #4a5568;
 }
 
 .space-detail-right {
     position: sticky;
     top: 100px;
-    align-self: start;
 }
 
 .booking-card {
@@ -88,6 +63,7 @@
     border-radius: 24px;
     padding: 1.5rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-top: -0.5rem;
 }
 
 .booking-title {
@@ -95,6 +71,7 @@
     font-weight: 700;
     color: #1e3799;
     margin-bottom: 0.5rem;
+    margin-top: 0;
 }
 
 .booking-hint {
@@ -110,19 +87,9 @@
 }
 
 .calendar-input {
-    width: 100%;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-}
-
-/* Скрываем поле ввода с выбранной датой */
-.calendar-input {
     display: none;
 }
 
-/* Центрируем календарь */
 .flatpickr-calendar {
     margin: 0 auto !important;
     position: relative !important;
@@ -140,7 +107,6 @@
     width: 100%;
 }
 
-/* Дни календаря */
 .flatpickr-day.full-day {
     background-color: #e2e8f0;
     color: #94a3b8;
@@ -152,7 +118,6 @@
     color: #854d0e;
 }
 
-/* Тултип для дат календаря */
 .calendar-tooltip {
     position: absolute;
     background: #1a2634;
@@ -169,7 +134,6 @@
     transform: translateX(-50%);
 }
 
-/* Стрелка вниз */
 .calendar-tooltip::after {
     content: '';
     position: absolute;
@@ -181,20 +145,12 @@
     border-color: #1a2634 transparent transparent transparent;
 }
 
-/* Красный тултип для ошибок */
 .calendar-tooltip.error {
     background: #e53e3e;
 }
 
 .calendar-tooltip.error::after {
     border-color: #e53e3e transparent transparent transparent;
-}
-
-/* Выбранная дата */
-.flatpickr-day.selected-day {
-    background-color: #1e3799 !important;
-    color: white !important;
-    border: none !important;
 }
 
 .booking-action-text {
@@ -238,23 +194,27 @@
 }
 
 .space-description {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
     background: white;
-    border-radius: 24px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .space-description h2 {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: 600;
     color: #1e3799;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.3px;
 }
 
 .space-description p {
-    font-size: 0.9375rem;
-    line-height: 1.7;
+    font-size: 1rem;
+    line-height: 1.6;
     color: #4a5568;
+    margin-bottom: 1rem;
+}
+
+.space-description p:last-child {
+    margin-bottom: 0;
 }
 
 @media (max-width: 900px) {
@@ -271,6 +231,18 @@
     }
 
     .space-main-image {
-        height: 250px;
+        height: 280px;
+    }
+
+    .space-title {
+        font-size: 1.75rem;
+    }
+
+    .booking-title {
+        font-size: 1.25rem;
+    }
+
+    .space-description h2 {
+        font-size: 1.125rem;
     }
 }

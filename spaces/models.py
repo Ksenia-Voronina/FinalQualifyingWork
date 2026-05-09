@@ -40,6 +40,10 @@ class Space(models.Model):
         default=True,
         verbose_name='Доступно для бронирования'
     )
+    show_on_homepage = models.BooleanField(
+        default=False,
+        verbose_name='Показывать на главной странице'
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Дата добавления'

@@ -1,7 +1,7 @@
 /* ========== SPACES COLLAGE (КОЛЛАЖ С ПРОСТРАНСТВАМИ) ========== */
 
 .spaces-showcase {
-    padding: 3rem 2rem 5rem 2rem;
+    padding: 3rem 2rem 0rem 2rem;
     background: #ffffff;
 }
 
@@ -21,23 +21,25 @@
 
 .spaces-subtitle {
     text-align: center;
-    font-size: 1.125rem;
+    font-size: 1rem;
     color: #4a5568;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
-/* Сетка коллажа */
+/* Сетка коллажа — левая колонка шире */
 .spaces-collage {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.8fr 1fr;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
+    align-items: start;
 }
 
 .collage-right-column {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    height: 100%;
 }
 
 /* Общие стили карточек */
@@ -55,6 +57,7 @@
 }
 
 .collage-card-image {
+    position: relative;
     overflow: hidden;
 }
 
@@ -62,6 +65,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform 0.5s ease;
 }
 
@@ -69,65 +73,70 @@
     transform: scale(1.05);
 }
 
-.collage-card-content {
-    padding: 1.25rem;
+/* Оверлей при наведении */
+.collage-card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(30, 55, 153, 0.92);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.collage-card-title {
+.collage-card:hover .collage-card-overlay {
+    opacity: 1;
+}
+
+.overlay-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #1a2634;
+    color: white;
     margin-bottom: 0.5rem;
 }
 
-.collage-card-capacity {
+.overlay-capacity {
     font-size: 0.875rem;
-    color: #6c7a91;
-    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0.75rem;
 }
 
-.collage-card-description {
-    font-size: 0.875rem;
-    color: #4a5568;
-    margin-bottom: 1rem;
-    line-height: 1.5;
-}
-
-.collage-card-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+.overlay-btn {
+    display: inline-block;
+    background: white;
     color: #1e3799;
     text-decoration: none;
-    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 30px;
     font-size: 0.875rem;
-    transition: gap 0.2s ease;
+    font-weight: 600;
+    transition: all 0.2s ease;
 }
 
-.collage-card-btn:hover {
-    gap: 0.75rem;
-    color: #162b70;
+.overlay-btn:hover {
+    background: #f0f2f5;
+    transform: scale(1.02);
 }
 
-/* Размеры карточек */
+/* Скрываем старый контент (текст под картинкой) */
+.collage-card-content {
+    display: none;
+}
+
+/* Размеры карточек — увеличиваем левую, уменьшаем правые */
 .collage-card-large .collage-card-image {
-    height: 380px;
+    height: 444px;
 }
 
 .collage-card-medium .collage-card-image {
-    height: 200px;
-}
-
-.collage-card-small .collage-card-image {
-    height: 160px;
-}
-
-/* Нижний ряд */
-.spaces-bottom-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 0;
+    height: 210px;
 }
 
 /* Адаптивность для планшетов */
@@ -139,21 +148,24 @@
 
     .collage-right-column {
         flex-direction: row;
-        gap: 1.5rem;
+        gap: 1rem;
     }
 
     .collage-right-column .collage-card-medium {
         flex: 1;
     }
 
-    .spaces-bottom-row {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.5rem;
+    .collage-card-large .collage-card-image {
+        height: 350px;
+    }
+
+    .collage-card-medium .collage-card-image {
+        height: auto;
     }
 }
 
 /* Адаптивность для мобильных */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
     .spaces-showcase {
         padding: 2rem 1rem 3rem 1rem;
     }
@@ -163,22 +175,31 @@
     }
 
     .spaces-subtitle {
-        font-size: 1rem;
+        font-size: 0.875rem;
     }
 
     .collage-right-column {
         flex-direction: column;
-    }
-
-    .spaces-bottom-row {
-        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .collage-card-large .collage-card-image {
-        height: 250px;
+        height: 280px;
     }
 
     .collage-card-medium .collage-card-image {
-        height: 180px;
+        height: auto;
+    }
+
+    /* На мобильных оверлей показываем всегда */
+    .collage-card-overlay {
+        opacity: 1;
+        background: rgba(30, 55, 153, 0.85);
+        position: relative;
+        margin-top: -4px;
+    }
+
+    .collage-card:hover .collage-card-image img {
+        transform: none;
     }
 }

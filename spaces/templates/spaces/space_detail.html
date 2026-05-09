@@ -34,16 +34,13 @@
                         {% endif %}
                     </span>
                 </div>
+            </div>
 
-                <div class="space-features">
-                    <h3>Удобства</h3>
-                    <ul>
-                        {% for feature in space.features.all %}
-                            <li>{{ feature.name }}</li>
-                        {% empty %}
-                            <li>Информация об удобствах отсутствует</li>
-                        {% endfor %}
-                    </ul>
+            <!-- Детальное описание -->
+            <div class="space-description">
+                <h2>Описание</h2>
+                <div class="description-text">
+                    {{ space.description|linebreaks }}
                 </div>
             </div>
         </div>
@@ -71,11 +68,7 @@
         </div>
     </div>
 
-    <!-- Детальное описание -->
-    <div class="space-description">
-        <h2>Описание</h2>
-        <p>{{ space.description }}</p>
-    </div>
+
 </div>
 {% endblock %}
 

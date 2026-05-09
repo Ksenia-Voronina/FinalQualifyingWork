@@ -1,9 +1,17 @@
 from django.shortcuts import render
+from spaces.models import Space
+
 
 def home_view(request):
     """Отображает главную страницу"""
+    featured_spaces = Space.objects.filter(
+        show_on_homepage=True,
+        is_available=True
+    )[:3]  # максимум 3 пространства на главной
+
     context = {
         'active': 'home',  # для подсветки активного пункта меню
+        'featured_spaces': featured_spaces,
     }
     return render(request, 'core/home.html', context)
 
