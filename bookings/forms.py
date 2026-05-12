@@ -6,12 +6,6 @@ from .models import Booking
 class BookingForm(forms.ModelForm):
     """Форма создания бронирования"""
 
-    time_slot = forms.ChoiceField(
-        choices=[],
-        required=False,
-        label='Доступное время'
-    )
-
     class Meta:
         model = Booking
         fields = ['event_name', 'event_description', 'start_datetime', 'end_datetime',
@@ -31,67 +25,43 @@ class BookingForm(forms.ModelForm):
             'special_requests': 'Особые пожелания',
         }
 
-    def __init__(self, *args, **kwargs):
-        self.space = kwargs.pop('space', None)
-        super().__init__(*args, **kwargs)
-
-        # Добавляем поле time_slot
-        if self.space:
-            self.fields['time_slot'].choices = self.get_available_slots()
-
-    def get_available_slots(self, date=None):
-        """Получение доступных слотов на определённую дату"""
-        from spaces.models import Space
-
-        if date is None:
-            date = timezone.now().date()
-
-        WORK_START = 8
-        WORK_END = 20
-        SLOT_DURATION = 2  # длительность слота в часах
-
-        # Получаем занятые интервалы на выбранную дату
-        booked = Booking.objects.filter(
-            space=self.space,
-            status__in=['pending', 'confirmed'],
-            start_datetime__date=date
-        )
-
-        booked_hours = set()
-        for b in booked:
-            start_hour = b.start_datetime.hour
-            end_hour = b.end_datetime.hour
-            for hour in range(start_hour, end_hour):
-                booked_hours.add(hour)
-
-        # Формируем доступные слоты
-        choices = [('', '---------')]
-        for hour in range(WORK_START, WORK_END - SLOT_DURATION + 1):
-            is_booked = any(h in booked_hours for h in range(hour, hour + SLOT_DURATION))
-            slot_label = f"{hour:02d}:00 - {hour + SLOT_DURATION:02d}:00"
-            if not is_booked:
-                choices.append((slot_label, slot_label))
-
-        return choices
-
-
     def clean_start_datetime(self):
-        """Проверка, что дата начала не в прошлом"""
+        """Проверка, что дата начала не в прошлом и в рабочее время"""
         start = self.cleaned_data.get('start_datetime')
 
         if start and start < timezone.now():
             raise forms.ValidationError('Нельзя выбрать дату и время в прошлом')
 
+        # Проверка рабочего времени (с 8:00 до 20:00)
+        if start:
+            hour = start.hour
+            if hour < 8 or hour >= 20:
+                raise forms.ValidationError('Пространство доступно для бронирования только с 8:00 до 20:00')
+
         return start
 
+    def clean_end_datetime(self):
+        """Проверка, что время окончания в рабочее время"""
+        end = self.cleaned_data.get('end_datetime')
+
+        if end:
+            hour = end.hour
+            # Если окончание в 20:00 — это допустимо (последний час)
+            if hour < 8 or hour > 20:
+                raise forms.ValidationError('Пространство доступно для бронирования только до 20:00')
+            if hour == 20 and end.minute > 0:
+                raise forms.ValidationError('Время окончания не может быть позже 20:00')
+
+        return end
+
     def clean(self):
-        """Проверка, что время не пересекается с существующими бронированиями"""
+        """Общая проверка формы"""
         cleaned_data = super().clean()
         start = cleaned_data.get('start_datetime')
         end = cleaned_data.get('end_datetime')
-        space = self.space
+        space = self.instance.space if self.instance.pk else None
 
-        # Если пространство ещё не привязано (новая запись), берём из cleaned_data
+        # Если пространство ещё не привязано, берём из данных
         if not space and 'space' in self.data:
             from spaces.models import Space
             try:
@@ -104,7 +74,7 @@ class BookingForm(forms.ModelForm):
             # Проверяем пересечение с существующими бронированиями
             overlapping = Booking.objects.filter(
                 space=space,
-                status__in=['pending', 'confirmed'],  # только активные брони
+                status__in=['pending', 'confirmed'],
                 end_datetime__gt=start,
                 start_datetime__lt=end
             ).exclude(id=self.instance.pk if self.instance.pk else None)

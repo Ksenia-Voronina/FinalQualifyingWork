@@ -63,6 +63,12 @@
                     <span class="info-icon">📅</span>
                     <strong>Выбранная дата: {{ selected_date|date:"d.m.Y" }}</strong>
                 </div>
+
+                <div class="working-hours-info">
+                    <span class="info-icon">⏰</span>
+                    <span>Время работы: с 8:00 до 20:00</span>
+                </div>
+
                 {% if booked_slots %}
                     <div class="booked-slots-list">
                         <div class="warning-header">
