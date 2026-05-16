@@ -146,20 +146,26 @@
     padding: 0.75rem 1rem;
     background: none;
     border: none;
-    color: #e74c3c;
+    color: #e53e3e;
     font-weight: 500;
+    font-size: 0.9375rem;
     cursor: pointer;
     border-radius: 12px;
-    transition: background-color 0.2s;
-}
-
-.sidebar-logout-btn:hover {
-    background-color: #fee2e2;
+    transition: all 0.2s ease;
 }
 
 .sidebar-logout-btn img {
     width: 18px;
     height: 18px;
+}
+
+.sidebar-logout-btn:hover {
+    background-color: rgba(229, 62, 62, 0.1);
+    color: #c53030;
+}
+
+.sidebar-logout-btn:hover img {
+    filter: brightness(0.87);
 }
 
 /* Кнопки авторизации в sidebar */
