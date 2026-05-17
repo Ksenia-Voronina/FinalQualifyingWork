@@ -41,13 +41,13 @@ def booking_create(request, space_id):
             messages.success(request, f'Пространство "{space.name}" успешно забронировано!')
             return redirect('bookings:my_bookings')
     else:
-        form = BookingForm()
+        form = BookingForm(space=space)
         # Предзаполнение даты из параметра
         selected_date = request.GET.get('date')
         if selected_date:
             try:
                 date_obj = datetime.strptime(selected_date, '%Y-%m-%d')
-                form = BookingForm(initial={'start_datetime': date_obj})
+                form = BookingForm(initial={'start_datetime': date_obj}, space=space)
             except ValueError:
                 pass
 

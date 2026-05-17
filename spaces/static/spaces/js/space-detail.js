@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const calendarInput = document.getElementById('booking-calendar');
     const bookingBtn = document.getElementById('booking-btn');
-    let selectedDate = null;  // ← Добавлено: переменная для хранения выбранной даты
+    let selectedDate = null;
 
     if (!calendarInput) return;
 
@@ -13,19 +13,27 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(tooltip);
     }
 
-    function showTooltip(element, message, isError = false) {
+    let tooltipTimer = null;
+
+    function showTooltip(element, message) {
         const rect = element.getBoundingClientRect();
+
+        // Отменяем предыдущий таймер
+        if (tooltipTimer) {
+            clearTimeout(tooltipTimer);
+        }
+
         tooltip.textContent = message;
         tooltip.style.display = 'block';
         tooltip.style.left = `${rect.left + rect.width / 2}px`;
         tooltip.style.top = `${rect.top - 35}px`;
         tooltip.style.transform = 'translateX(-50%)';
-        tooltip.style.backgroundColor = isError ? '#e53e3e' : '#1a2634';
+        tooltip.style.backgroundColor = '#1a2634';
 
-        // Скрываем через 3 секунды
-        setTimeout(() => {
+        tooltipTimer = setTimeout(() => {
             tooltip.style.display = 'none';
-        }, 3000);
+            tooltipTimer = null;
+        }, 3000);  // 3 секунды
     }
 
     function hideTooltip() {
@@ -102,8 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
             day._clickHandler = function(e) {
                 e.stopPropagation();
                 const msg = getTooltipMessage(status);
-                const isError = (status === 'full');
-                showTooltip(day, msg, isError);
+                showTooltip(day, msg);
 
                 // Сохраняем выбранную дату
                 if (status !== 'full') {
@@ -134,12 +141,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (status === 'full') {
                     bookingBtn.classList.add('disabled');
                     bookingBtn.href = "#";
-                    showTooltip(calendarInput.nextElementSibling, getTooltipMessage(status), true);
+                    showTooltip(calendarInput.nextElementSibling, getTooltipMessage(status));
                 } else {
-                    selectedDate = dateStr;  // ← ДОБАВЛЕНО: сохраняем дату
+                    selectedDate = dateStr;
                     bookingBtn.classList.remove('disabled');
                     bookingBtn.href = `/bookings/create/${spaceId}/?date=${dateStr}`;
-                    showTooltip(calendarInput.nextElementSibling, getTooltipMessage(status), false);
+                    showTooltip(calendarInput.nextElementSibling, getTooltipMessage(status));
                 }
             }
         }

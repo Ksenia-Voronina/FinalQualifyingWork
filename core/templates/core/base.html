@@ -89,6 +89,17 @@
 
     <!-- ==================== MAIN CONTENT ==================== -->
     <main class="main">
+        <!-- Flash-сообщения -->
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>
@@ -128,6 +139,23 @@
     <!-- ==================== SCRIPTS ==================== -->
     <script src="{{ STATIC_PREFIX }}core/js/sidebar.js"></script>
     {% block extra_js %}{% endblock %}
+
+    <script>
+        // Автоматическое скрытие flash-сообщений через 5 секунд
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.alert');
+            messages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    message.style.transition = 'opacity 0.3s ease';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+    </script>
 
 </body>
 </html>

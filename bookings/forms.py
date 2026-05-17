@@ -25,6 +25,11 @@ class BookingForm(forms.ModelForm):
             'special_requests': 'Особые пожелания',
         }
 
+    def __init__(self, *args, **kwargs):
+        # Извлекаем параметр space, если он передан
+        self.space = kwargs.pop('space', None)
+        super().__init__(*args, **kwargs)
+
     def clean_start_datetime(self):
         """Проверка, что дата начала не в прошлом и в рабочее время"""
         start = self.cleaned_data.get('start_datetime')
@@ -59,19 +64,9 @@ class BookingForm(forms.ModelForm):
         cleaned_data = super().clean()
         start = cleaned_data.get('start_datetime')
         end = cleaned_data.get('end_datetime')
-        space = self.instance.space if self.instance.pk else None
-
-        # Если пространство ещё не привязано, берём из данных
-        if not space and 'space' in self.data:
-            from spaces.models import Space
-            try:
-                space_id = self.data.get('space')
-                space = Space.objects.get(id=space_id)
-            except:
-                pass
+        space = self.space
 
         if start and end and space:
-            # Проверяем пересечение с существующими бронированиями
             overlapping = Booking.objects.filter(
                 space=space,
                 status__in=['pending', 'confirmed'],

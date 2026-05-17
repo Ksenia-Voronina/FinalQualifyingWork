@@ -20,7 +20,7 @@
 }
 
 .booking-form-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 1rem;
 }
@@ -191,7 +191,7 @@
 /* Сообщения об ошибках */
 .form-error {
     color: #e53e3e;
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     margin-top: 0.25rem;
 }
 
