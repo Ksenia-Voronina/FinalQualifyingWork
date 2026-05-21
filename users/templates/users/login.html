@@ -25,7 +25,7 @@
             {% csrf_token %}
 
             <div class="form-group {% if form.username.errors %}error-field{% endif %}">
-                <label for="{{ form.username.id_for_label }}">Email</label>
+                <label for="{{ form.username.id_for_label }}">Логин (email или username)</label>
                 {{ form.username }}
                 {% if form.username.errors %}
                     <div class="form-error">{{ form.username.errors }}</div>

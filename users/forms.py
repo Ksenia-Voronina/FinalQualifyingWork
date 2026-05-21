@@ -56,12 +56,12 @@ class RegistrationForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    """Форма входа в систему (по email)"""
+    """Форма входа в систему (по email или username)"""
 
-    username = forms.EmailField(
-        label='Email',
-        widget=forms.EmailInput(attrs={
-            'placeholder': 'example@university.ru'
+    username = forms.CharField(
+        label='Логин (email или username)',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'example@university.ru или username'
         })
     )
     password = forms.CharField(
@@ -73,19 +73,16 @@ class LoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Меняем сообщения для полей
         self.fields['username'].error_messages = {
-            'required': 'Введите email',
-            'invalid': 'Введите корректный email'
+            'required': 'Введите логин',
         }
         self.fields['password'].error_messages = {
             'required': 'Введите пароль',
         }
-        # Меняем стандартное сообщение об ошибке
-        self.error_messages['invalid_login'] = 'Неверный email или пароль'
+        # Общее сообщение при неверной аутентификации
+        self.error_messages['invalid_login'] = 'Неверный логин или пароль'
 
     def confirm_login_allowed(self, user):
-        """Переопределяем проверку активности пользователя"""
         if not user.is_active:
             raise forms.ValidationError(
                 'Учётная запись не активирована',
