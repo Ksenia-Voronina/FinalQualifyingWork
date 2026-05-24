@@ -111,14 +111,15 @@
     background: #f8faff;
     padding: 1rem 1.5rem;
     border-radius: 16px;
-    margin: 1.5rem 0;
+    margin: 0.5rem 0 1rem 0;
 }
 
 .booking-summary h3 {
     font-size: 1rem;
     font-weight: 700;
     color: #1e3799;
-    margin-bottom: 0.75rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
 }
 
 .booking-summary p {

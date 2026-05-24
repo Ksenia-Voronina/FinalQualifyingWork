@@ -143,10 +143,9 @@
             </div>
 
             <div class="booking-summary">
-                <h3>Расчёт стоимости</h3>
-                <p>Стоимость часа: {% if space.price_per_hour == 0 %}Бесплатно{% else %}{{ space.price_per_hour }} ₽{% endif %}</p>
+                <h3>Итого:</h3>
+                <p>Стоимость: {% if space.price_per_hour == 0 %}Бесплатно{% else %}{{ space.price_per_hour }} ₽{% endif %}</p>
                 <p>Продолжительность: <span id="duration">0</span> ч.</p>
-                <p>Итого: <span id="total">0</span> {% if space.price_per_hour != 0 %}₽{% endif %}</p>
             </div>
 
             <div class="booking-form-actions">

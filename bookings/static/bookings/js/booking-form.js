@@ -6,20 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalSpan = document.getElementById('total');
     const pricePerHour = parseFloat(document.getElementById('price-per-hour')?.dataset.price || 0);
 
-    // Расчёт стоимости
-    function calculateTotal() {
+    // Расчёт продолжительности
+    function calculateDuration() {
         if (startInput && endInput && startInput.value && endInput.value) {
             const start = new Date(startInput.value);
             const end = new Date(endInput.value);
             const duration = (end - start) / (1000 * 3600);
             if (duration > 0) {
                 durationSpan.textContent = duration.toFixed(1);
-                totalSpan.textContent = (duration * pricePerHour).toFixed(0);
                 return;
             }
         }
         if (durationSpan) durationSpan.textContent = '0';
-        if (totalSpan) totalSpan.textContent = '0';
     }
 
     // Прокрутка к первому полю с ошибкой
@@ -58,12 +56,12 @@ document.addEventListener('DOMContentLoaded', function() {
     scrollToFirstError();
 
     if (startInput) {
-        startInput.addEventListener('change', calculateTotal);
-        startInput.addEventListener('input', calculateTotal);
+        startInput.addEventListener('change', calculateDuration);
+        startInput.addEventListener('input', calculateDuration);
     }
     if (endInput) {
-        endInput.addEventListener('change', calculateTotal);
-        endInput.addEventListener('input', calculateTotal);
+        endInput.addEventListener('change', calculateDuration);
+        endInput.addEventListener('input', calculateDuration);
     }
 
     calculateTotal();
